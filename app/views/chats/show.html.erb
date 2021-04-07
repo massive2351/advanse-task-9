@@ -1,0 +1,16 @@
+
+
+  <h1><%= @user.name %>さんとチャットする</h1>
+  <div class="message">
+    <% @chats.each do |chat| %>
+      <p style="is_message"><%= chat.message %><p>
+    <% end %>
+  </div>
+  
+  
+  <%= form_with model: @chat do |f| %>
+      <%= f.text_field :message %>
+      <%= f.hidden_field :room_id %>
+      <%= f.submit %>
+  <% end %>
+

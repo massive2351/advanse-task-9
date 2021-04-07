@@ -13,21 +13,19 @@ class User < ApplicationRecord
 	has_many :following_user, through: :follower, source: :followed 
   has_many :follower_user, through: :followed, source: :follower 
   
-   # ユーザーをフォローする
+  has_many :user_rooms
+  has_many :chats
+  
+
   def follow(user_id)
     follower.create(followed_id: user_id)
   end
-
-    # ユーザーのフォローを外す
   def unfollow(user_id)
     follower.find_by(followed_id: user_id).destroy
   end
-
-    # フォロー確認をおこなう
   def following?(user)
     following_user.include?(user)
   end
-
   def favorited_by?(book_id)
     favorites.where(book_id: book_id).exists?
   end
@@ -36,11 +34,9 @@ class User < ApplicationRecord
   
   include JpPrefecture
   jp_prefecture :prefecture_code
-  
   def prefecture_name
     JpPrefecture::Prefecture.find(code: prefecture_code).try(:name)
   end
-  
   def prefecture_name=(prefecture_name)
     self.prefecture_code = JpPrefecture::Prefecture.find(name: prefecture_name).code
   end
